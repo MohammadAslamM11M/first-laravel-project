@@ -10,7 +10,7 @@
     <a href="{{route('posts.create')}}">Create New Post</a>
 
     @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <ul>
@@ -18,6 +18,8 @@
             <li>
                 <strong>{{ $post->title }}</strong><br>
                 {{ $post->content }} <br>
+                <em>Author: {{ $post->user->name ?? 'Unknown' }}</em>
+
                 <a href="{{ route('posts.edit', $post->id) }}">Edit</a>
                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                     @csrf
