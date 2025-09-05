@@ -20,12 +20,17 @@
                 {{ $post->content }} <br>
                 <em>Author: {{ $post->user->name ?? 'Unknown' }}</em>
 
-                <a href="{{ route('posts.edit', $post->id) }}">Edit</a>
-                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Delete</button>
-                </form>
+                @can('update', $post)
+                    <a href="{{ route('posts.edit', $post->id) }}">Edit</a>
+                @endcan
+
+                @can('delete', $post)
+                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                @endcan
             </li>
         @endforeach
     </ul>
