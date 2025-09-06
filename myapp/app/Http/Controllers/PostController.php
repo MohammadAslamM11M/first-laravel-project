@@ -15,10 +15,24 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        // Get search query from input
+        $search = $request->query('search');
+
+        // Query posts, filter by title if search exists
+        $posts = Post::with('user')
+            ->when($search, function($query, $search){
+                $query->where('title', 'like', "%{search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(5) // 5 posts per page
+            ->withQueryString(); // keep search query in pagination links
+
+        return view('posts.index', [
+            'posts' => $posts,
+            'search' => $search,
+        ]);
     }
 
     /**

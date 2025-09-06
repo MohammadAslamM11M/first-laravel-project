@@ -7,6 +7,13 @@
 </head>
 <body>
     <h1>All Posts</h1>
+
+    <!-- Search form -->
+    <form method="GET" action="{{ route('posts.index') }}">
+        <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search by title">
+        <button type="submit">Search</button>
+    </form>
+
     <a href="{{route('posts.create')}}">Create New Post</a>
 
     @if(session('success'))
@@ -34,5 +41,8 @@
             </li>
         @endforeach
     </ul>
+    
+    <!-- Pagination links -->
+    {{ $posts->links() }}
 </body>
 </html>
